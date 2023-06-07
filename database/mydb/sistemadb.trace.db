@@ -1,0 +1,3 @@
+2023-06-07 01:31:08 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Table "USUARIOS" not found; SQL statement:
+SELECT * FROM usuarios WHERE nome = 'João Silva' AND senha = '123456' AND cpf = '1235678901' AND endereco = 'Rua A, 123' AND profissao = 'Engenheiro' [42102-200]
