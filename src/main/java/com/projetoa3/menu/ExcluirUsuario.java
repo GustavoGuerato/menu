@@ -15,15 +15,16 @@ public class ExcluirUsuario extends JFrame {
     private JTextField cpfField;
     private JTextField enderecoField;
     private JTextField profissaoField;
+    private JTextField emailField;
 
     public ExcluirUsuario() {
         super("Excluir Aluno");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        setSize(400, 350);
+        setSize(400, 400);
         setLocationRelativeTo(null);
 
         JPanel panel = new JPanel();
-        panel.setLayout(new GridLayout(6, 2, 10, 10));
+        panel.setLayout(new GridLayout(7, 2, 10, 10));
         panel.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
 
         JLabel nomeLabel = new JLabel("Nome:");
@@ -36,6 +37,8 @@ public class ExcluirUsuario extends JFrame {
         enderecoField = new JTextField();
         JLabel profissaoLabel = new JLabel("Profissão:");
         profissaoField = new JTextField();
+        JLabel emailLabel = new JLabel("Email:");
+        emailField = new JTextField();
 
         JButton excluirButton = new JButton("Excluir");
 
@@ -46,23 +49,25 @@ public class ExcluirUsuario extends JFrame {
                 String cpf = cpfField.getText();
                 String endereco = enderecoField.getText();
                 String profissao = profissaoField.getText();
+                String email = emailField.getText();
 
-                // Excluir aluno do banco de dados
+                // Excluir usuário do banco de dados
                 try {
                     Connection conn = DriverManager.getConnection("jdbc:mysql://127.0.0.1:3306/sistemadb", "root", "gg08142325");
-                    String query = "DELETE FROM alunos WHERE nome = ? AND senha = ? AND cpf = ? AND endereco = ? AND profissao = ?";
+                    String query = "DELETE FROM usuarios WHERE nome = ? AND senha = ? AND cpf = ? AND endereco = ? AND profissao = ? AND email = ?";
                     PreparedStatement stmt = conn.prepareStatement(query);
                     stmt.setString(1, nome);
                     stmt.setString(2, senha);
                     stmt.setString(3, cpf);
                     stmt.setString(4, endereco);
                     stmt.setString(5, profissao);
+                    stmt.setString(6, email);
 
                     int rowsAffected = stmt.executeUpdate();
                     if (rowsAffected > 0) {
-                        JOptionPane.showMessageDialog(null, "Aluno excluído com sucesso!");
+                        JOptionPane.showMessageDialog(null, "Usuário excluído com sucesso!");
                     } else {
-                        JOptionPane.showMessageDialog(null, "Nenhum aluno encontrado com os dados fornecidos.");
+                        JOptionPane.showMessageDialog(null, "Nenhum usuário encontrado com os dados fornecidos.");
                     }
 
                     stmt.close();
@@ -83,6 +88,8 @@ public class ExcluirUsuario extends JFrame {
         panel.add(enderecoField);
         panel.add(profissaoLabel);
         panel.add(profissaoField);
+        panel.add(emailLabel);
+        panel.add(emailField);
         panel.add(excluirButton);
 
         add(panel);

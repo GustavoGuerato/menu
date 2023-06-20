@@ -14,12 +14,11 @@ public class AlterarUsuario extends JFrame {
     private JTextField cpfField;
     private JTextField nomeField;
     private JTextField emailField;
-    private JTextField enderecoField;
     private JTextField profissaoField;
-    private JPasswordField senhaField;
+    private JPasswordField passwordField;
 
     public AlterarUsuario() {
-        super("Alterar Aluno");
+        super("Alterar Usuário");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setSize(400, 400);
         setLocationRelativeTo(null);
@@ -34,16 +33,14 @@ public class AlterarUsuario extends JFrame {
         JLabel cpfLabel = new JLabel("CPF:");
         JLabel nomeLabel = new JLabel("Nome:");
         JLabel emailLabel = new JLabel("Email:");
-        JLabel enderecoLabel = new JLabel("Endereço:");
         JLabel profissaoLabel = new JLabel("Profissão:");
         JLabel senhaLabel = new JLabel("Nova Senha:");
 
         cpfField = new JTextField(15);
         nomeField = new JTextField(15);
         emailField = new JTextField(15);
-        enderecoField = new JTextField(15);
         profissaoField = new JTextField(15);
-        senhaField = new JPasswordField(15);
+        passwordField = new JPasswordField(15);
 
         JButton buscarButton = new JButton("Buscar");
         JButton alterarButton = new JButton("Alterar");
@@ -79,44 +76,36 @@ public class AlterarUsuario extends JFrame {
 
         gbc.gridx = 0;
         gbc.gridy = 3;
-        panel.add(enderecoLabel, gbc);
-
-        gbc.gridx = 1;
-        gbc.gridy = 3;
-        panel.add(enderecoField, gbc);
-
-        gbc.gridx = 0;
-        gbc.gridy = 4;
         panel.add(profissaoLabel, gbc);
 
         gbc.gridx = 1;
-        gbc.gridy = 4;
+        gbc.gridy = 3;
         panel.add(profissaoField, gbc);
 
         gbc.gridx = 0;
-        gbc.gridy = 5;
+        gbc.gridy = 4;
         panel.add(senhaLabel, gbc);
 
         gbc.gridx = 1;
-        gbc.gridy = 5;
-        panel.add(senhaField, gbc);
+        gbc.gridy = 4;
+        panel.add(passwordField, gbc);
 
         gbc.gridx = 1;
-        gbc.gridy = 6;
+        gbc.gridy = 5;
         panel.add(alterarButton, gbc);
 
         gbc.gridx = 2;
-        gbc.gridy = 6;
+        gbc.gridy = 5;
         panel.add(limparButton, gbc);
 
         buscarButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 String cpf = cpfField.getText();
 
-                // Buscar aluno no banco de dados
+                // Buscar usuário no banco de dados
                 try {
                     Connection conn = DriverManager.getConnection("jdbc:mysql://127.0.0.1:3306/sistemadb", "root", "gg08142325");
-                    String query = "SELECT nome, email, endereco, profissao FROM alunos WHERE cpf = ?";
+                    String query = "SELECT nome, email, profissao FROM usuarios WHERE cpf = ?";
                     PreparedStatement stmt = conn.prepareStatement(query);
                     stmt.setString(1, cpf);
 
@@ -124,15 +113,13 @@ public class AlterarUsuario extends JFrame {
                     if (rs.next()) {
                         String nome = rs.getString("nome");
                         String email = rs.getString("email");
-                        String endereco = rs.getString("endereco");
                         String profissao = rs.getString("profissao");
 
                         nomeField.setText(nome);
                         emailField.setText(email);
-                        enderecoField.setText(endereco);
                         profissaoField.setText(profissao);
                     } else {
-                        JOptionPane.showMessageDialog(null, "Aluno não encontrado.");
+                        JOptionPane.showMessageDialog(null, "Usuário não encontrado.");
                         limparCampos();
                     }
 
@@ -150,38 +137,36 @@ public class AlterarUsuario extends JFrame {
                 String cpf = cpfField.getText();
                 String nome = nomeField.getText();
                 String email = emailField.getText();
-                String endereco = enderecoField.getText();
                 String profissao = profissaoField.getText();
-                String novaSenha = new String(senhaField.getPassword());
+                String novaSenha = new String(passwordField.getPassword());
 
-                // Alterar aluno no banco de dados
+                // Alterar usuário no banco de dados
                 try {
                     Connection conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/sistemadb", "root", "gg08142325");
                     String query;
                     PreparedStatement stmt;
 
                     if (!novaSenha.isEmpty()) {
-                        query = "UPDATE alunos SET nome = ?, email = ?, endereco = ?, profissao = ?, senha = ? WHERE cpf = ?";
+                        query = "UPDATE usuarios SET nome = ?, email = ?, profissao = ?, senha = ? WHERE cpf = ?";
                         stmt = conn.prepareStatement(query);
-                        stmt.setString(5, novaSenha);
-                        stmt.setString(6, cpf);
-                    } else {
-                        query = "UPDATE alunos SET nome = ?, email = ?, endereco = ?, profissao = ? WHERE cpf = ?";
-                        stmt = conn.prepareStatement(query);
+                        stmt.setString(4, novaSenha);
                         stmt.setString(5, cpf);
+                    } else {
+                        query = "UPDATE usuarios SET nome = ?, email = ?, profissao = ? WHERE cpf = ?";
+                        stmt = conn.prepareStatement(query);
+                        stmt.setString(4, cpf);
                     }
 
                     stmt.setString(1, nome);
                     stmt.setString(2, email);
-                    stmt.setString(3, endereco);
-                    stmt.setString(4, profissao);
+                    stmt.setString(3, profissao);
 
                     int rowsAffected = stmt.executeUpdate();
                     if (rowsAffected > 0) {
-                        JOptionPane.showMessageDialog(null, "Aluno alterado com sucesso!");
+                        JOptionPane.showMessageDialog(null, "Usuário alterado com sucesso!");
                         limparCampos();
                     } else {
-                        JOptionPane.showMessageDialog(null, "Falha ao alterar aluno.");
+                        JOptionPane.showMessageDialog(null, "Falha ao alterar usuário.");
                     }
 
                     stmt.close();
@@ -206,15 +191,14 @@ public class AlterarUsuario extends JFrame {
         cpfField.setText("");
         nomeField.setText("");
         emailField.setText("");
-        enderecoField.setText("");
         profissaoField.setText("");
-        senhaField.setText("");
+        passwordField.setText("");
     }
 
     public static void main(String[] args) {
         SwingUtilities.invokeLater(new Runnable() {
             public void run() {
-                new AlterarAluno();
+                new AlterarUsuario();
             }
         });
     }

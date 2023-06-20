@@ -54,12 +54,12 @@ public class IncluirAluno extends JFrame {
                 String ra = raField.getText();
                 String campus = campusField.getText(); // Obter o campus digitado
                 String curso = cursoField.getText(); // Obter o curso digitado
-                String password = new String(senhaField.getPassword());
+                String senha = new String(senhaField.getPassword());
 
                 // Incluir aluno no banco de dados
                 try {
                     Connection conn = DriverManager.getConnection("jdbc:mysql://127.0.0.1:3306/sistemadb", "root", "gg08142325");
-                    String query = "INSERT INTO alunos (nome, cpf, email, ra, campus, curso, password) VALUES (?, ?, ?, ?, ?, ?, ?)";
+                    String query = "INSERT INTO alunos (nome, cpf, email, ra, campus, curso, senha) VALUES (?, ?, ?, ?, ?, ?, ?)";
                     PreparedStatement stmt = conn.prepareStatement(query);
                     stmt.setString(1, nome);
                     stmt.setString(2, cpf);
@@ -67,7 +67,7 @@ public class IncluirAluno extends JFrame {
                     stmt.setString(4, ra);
                     stmt.setString(5, campus);
                     stmt.setString(6, curso);
-                    stmt.setString(7, password);
+                    stmt.setString(7, senha);
 
                     int rowsAffected = stmt.executeUpdate();
                     if (rowsAffected > 0) {

@@ -15,15 +15,16 @@ public class IncluirUsuario extends JFrame {
     private JTextField cpfField;
     private JTextField enderecoField;
     private JTextField profissaoField;
+    private JTextField emailField;
 
     public IncluirUsuario() {
         super("Incluir Usuário");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        setSize(400, 300);
+        setSize(400, 350);
         setLocationRelativeTo(null);
 
         JPanel panel = new JPanel();
-        panel.setLayout(new GridLayout(6, 2, 10, 10));
+        panel.setLayout(new GridLayout(7, 2, 10, 10));
         panel.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
 
         JLabel nomeLabel = new JLabel("Nome:");
@@ -36,6 +37,8 @@ public class IncluirUsuario extends JFrame {
         enderecoField = new JTextField();
         JLabel profissaoLabel = new JLabel("Profissão:");
         profissaoField = new JTextField();
+        JLabel emailLabel = new JLabel("Email:");
+        emailField = new JTextField();
 
         JButton incluirButton = new JButton("Incluir");
         JButton limparButton = new JButton("Limpar");
@@ -47,17 +50,19 @@ public class IncluirUsuario extends JFrame {
                 String cpf = cpfField.getText();
                 String endereco = enderecoField.getText();
                 String profissao = profissaoField.getText();
+                String email = emailField.getText();
 
                 // Incluir usuário no banco de dados
                 try {
                     Connection conn = DriverManager.getConnection("jdbc:mysql://127.0.0.1:3306/sistemadb", "root", "gg08142325");
-                    String query = "INSERT INTO usuarios (nome, senha, cpf, endereco, profissao) VALUES (?, ?, ?, ?, ?)";
+                    String query = "INSERT INTO usuarios (nome, senha, cpf, endereco, profissao, email) VALUES (?, ?, ?, ?, ?, ?)";
                     PreparedStatement stmt = conn.prepareStatement(query);
                     stmt.setString(1, nome);
                     stmt.setString(2, senha);
                     stmt.setString(3, cpf);
                     stmt.setString(4, endereco);
                     stmt.setString(5, profissao);
+                    stmt.setString(6, email);
 
                     int rowsAffected = stmt.executeUpdate();
                     if (rowsAffected > 0) {
@@ -91,6 +96,8 @@ public class IncluirUsuario extends JFrame {
         panel.add(enderecoField);
         panel.add(profissaoLabel);
         panel.add(profissaoField);
+        panel.add(emailLabel);
+        panel.add(emailField);
         panel.add(incluirButton);
         panel.add(limparButton);
 
@@ -104,6 +111,7 @@ public class IncluirUsuario extends JFrame {
         cpfField.setText("");
         enderecoField.setText("");
         profissaoField.setText("");
+        emailField.setText("");
     }
 
     public static void main(String[] args) {

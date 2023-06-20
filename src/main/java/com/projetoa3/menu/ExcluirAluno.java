@@ -58,7 +58,7 @@ public class ExcluirAluno extends JFrame {
                 // Excluir aluno do banco de dados
                 try {
                     Connection conn = DriverManager.getConnection("jdbc:mysql://127.0.0.1:3306/sistemadb", "root", "gg08142325");
-                    String query = "DELETE FROM alunos WHERE nome = ? AND cpf = ? AND password = ? AND curso = ? AND ra = ? AND email = ? AND campus = ?";
+                    String query = "DELETE FROM alunos WHERE nome = ? AND cpf = ? AND senha = ? AND curso = ? AND ra = ? AND email = ? AND campus = ?";
                     PreparedStatement stmt = conn.prepareStatement(query);
                     stmt.setString(1, nome);
                     stmt.setString(2, cpf);

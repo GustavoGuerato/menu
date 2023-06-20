@@ -49,7 +49,7 @@ public class LoginForm extends JFrame {
                     Statement statement = connection.createStatement();
 
                     // Executa uma consulta para verificar as credenciais
-                    String query = "SELECT * FROM alunos WHERE nome = '" + username + "' AND password = '" + password + "'";
+                    String query = "SELECT * FROM alunos WHERE nome = '" + username + "' AND senha = '" + password + "'";
                     ResultSet resultSet = statement.executeQuery(query);
 
                     // Verifica se há resultados
